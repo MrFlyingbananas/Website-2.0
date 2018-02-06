@@ -33,7 +33,7 @@ class Glass {
 		// line(this.v3.x, this.v3.y, this.v1.x, this.v1.y);
 		push();
 		this.pos.add(this.vel);
-		translate(this.center.x + this.pos.x, this.center.y + this.pos.x);
+		translate(this.center.x + this.pos.x, this.center.y + this.pos.x, this.pos.z);
 		if (this.rot != 0) {
 			rotate(this.rot * this.rotMult);
 		}
@@ -58,15 +58,15 @@ class Glass {
 	explode() {
 		var flip1 = random(0, 1);
 		if (flip1 > .5) {
-			flip1 = 1
+			flip1 = 1;
 		} else {
-			flip1 = -1
+			flip1 = -1;
 		}
 		var flip2 = random(0, 1);
 		if (flip2 > .5) {
-			flip2 = 1
+			flip2 = 1;
 		} else {
-			flip2 = -1
+			flip2 = -1;
 		}
 		this.vel.x = flip1 * random(10, 50);
 		this.vel.y = flip2 * random(10, 50);
@@ -74,5 +74,8 @@ class Glass {
 		this.v1 = this.v1.copy();
 		this.v2 = this.v2.copy();
 		this.v3 = this.v3.copy();
+	}
+	recalculateCenter() {
+		this.center = createVector((this.v1.x + this.v2.x + this.v3.x) / 3, (this.v1.y + this.v2.y + this.v3.y) / 3);
 	}
 }

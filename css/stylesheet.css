@@ -1,8 +1,21 @@
 #FlowField-holder {
-  z-index: -100;
-  position: sticky;
+	z-index: 10;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
-#canvas {
-  z-index: -100;
-  position: sticky;
+
+.behind {
+	display: block;
+	position: absolute;
+	z-index: 0;
 }
+
+.behindtext {
+	z-index: 0;
+	position: inherit;
+}
+body {
+	padding: 0;
+	margin: 0;
+ }

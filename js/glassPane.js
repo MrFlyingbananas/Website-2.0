@@ -91,15 +91,17 @@ var fs = [
 
 	// Return the shader
 ].join('\n');
-var shad;
+var canvas;
+
 
 function setup() {
+	background(0, 0, 0, 0);
 	pixelDensity(1);
-	let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-	shad = createShader(vs, fs);
+	canvas = createCanvas(windowWidth, windowHeight, WEBGL);
 	let incx = windowWidth / sections;
 	let incy = windowHeight / sections;
 	canvas.parent('FlowField-holder');
+	centerCanvas()
 	let range = 80;
 	let zrange = 100;
 	for (let i = 0; i < sections + 1; i++) {
@@ -130,6 +132,35 @@ function setup() {
 
 	frameRate(30);
 
+	window.onresize = windowResized;
+	centerCanvas();
+
+}
+
+function centerCanvas() {
+	canvas.position(0, 0);
+}
+
+function windowResized() {
+	if (windowWidth != canvas.size().width || windowHeight != canvas.size().height) {
+
+		if (!explode) {
+			let incx = windowWidth / sections;
+			let prevIncx = canvas.size().width / sections;
+			let prevIncy = canvas.size().height / sections;
+			let incy = windowHeight / sections;
+			for (let i = 0; i < sections + 1; i++) {
+				for (let j = 0; j < sections + 1; j++) {
+					points[i * (sections + 1) + j].add(createVector(j * (incx - prevIncx), i * (incy - prevIncy), 0));
+				}
+			}
+			for (let g of glass) {
+				g.recalculateCenter();
+			}
+		}
+		resizeCanvas(windowWidth, windowHeight);
+		centerCanvas();
+	}
 }
 
 function draw() {
@@ -165,7 +196,6 @@ function draw() {
 
 	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 100);
 	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 100);
-	console.log(time)
 	if (time > 2 && !explode) {
 		explode = true;
 		for (let g of glass) {
