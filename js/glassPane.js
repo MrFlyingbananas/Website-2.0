@@ -1,9 +1,9 @@
-const sections = 6;
+const sections = 7;
 let glass = [];
 
 let time = 0;
 let points = [];
-let inc = .5;
+let inc = 2;
 let explode = false;
 var vs = [
 
@@ -101,7 +101,7 @@ function setup() {
 	let incx = windowWidth / sections;
 	let incy = windowHeight / sections;
 	canvas.parent('FlowField-holder');
-	centerCanvas()
+	centerCanvas();
 	let range = 80;
 	let zrange = 100;
 	for (let i = 0; i < sections + 1; i++) {
@@ -164,7 +164,7 @@ function windowResized() {
 }
 
 function draw() {
-	time += .02;
+	time += .04;
 	let yoff = 0;
 	for (let i = 0; i < sections + 1; i++) {
 
@@ -174,24 +174,28 @@ function draw() {
 				continue;
 			}
 			xoff += inc;
-			points[i * (sections + 1) + j].z = map(noise(xoff, yoff, time), 0, 1, -300, 300);
+			points[i * (sections + 1) + j].z = map(noise(xoff, yoff, time), 0, 1, -100, 300);
 		}
 		yoff += inc;
 	}
-
 	translate(-windowWidth / 2, -windowHeight / 2);
 	background(220);
 	// shader(mandel);
-	ambientLight(66, 0, 49, 20);
-	directionalLight(136, 0, 102, 0, -.25, -1);
-	directionalLight(136, 50, 100, 0, .25, -1);
-	directionalLight(136, 50, 100, .25, 0, -1);
-	directionalLight(136, 50, 100, -.25, 0, -1);
-	ambientMaterial(200);
+	let r =51, g = 91, b = 107;
+	ambientLight(0, 100, 200, 0);
+	pointLight(200,200,200, windowWidth/2, windowHeight/2, -1);
+	strokeWeight(0);
+	pointLight(200,200,200, windowWidth/2, windowHeight, 1);
+	// pointLight(200,200,200, windowWidth/2, windowHeight/2, 1);
+	// pointLight(r, g, b, 0, 0, -1);
+	// pointLight(r, g, b, 0, 0, -1);
+	// pointLight(r, g, b, 0, 0, -1);
+	// pointLight(r, g, b, 0, 0, -1);
+	ambientMaterial(255);
 	push();
 	translate(windowWidth / 2, windowHeight / 2, -150);
-	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 100);
-	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 100);
+	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 200);
+	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 200);
 	pop();
 
 	// pointLight(255, 50, 100, windowWidth / 2, windowHeight / 2, 100);
@@ -199,12 +203,12 @@ function draw() {
 	if (time > 2 && !explode) {
 		explode = true;
 		for (let g of glass) {
-			g.explode();
+			// g.explode();
 		}
 	}
 	for (let g of glass) {
 		if (explode) {
-			g.addRot(.1);
+			// g.addRot(.1);
 		}
 		g.render();
 	}
